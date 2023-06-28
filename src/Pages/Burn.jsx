@@ -1,8 +1,46 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import BurnModal from "../components/UI/burn";
+import burn from "../assets/BurnBOi.jpg";
+import burn1 from "../assets/bOOG_03.jpg";
+
+import { AppContext } from "../context/appContext";
+import { useAccount, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
+import { ethers } from "ethers";
+import abi from "../contracts/master.json";
 
 const Burn = () => {
+  const { chain } = useNetwork();
+  const { address, isConnected } = useAccount();
+  const { data: signer } = useSigner();
+  const { switchNetwork } = useSwitchNetwork();
+
   const [error, setError] = useState(false);
+  const [collection, setCollection] = useState("1");
+  const [id, setId] = useState();
+
+  const { masterCa } = useContext(AppContext);
+
+  const handleId = (e) => {
+    if (e.target.value < 0) return;
+    setId(e.target.value);
+  };
+
+  const burnNFT = async () => {
+    if (!isConnected) return alert("Not Connected!");
+
+    const contract = new ethers.Contract(masterCa, abi, signer);
+
+    console.log(collection, id, masterCa);
+
+    try {
+      const burnToken = await contract.burn(collection, id);
+      await burnToken.wait();
+
+      alert("NFT Burnt!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section className="w-full flex justify-center">
@@ -21,19 +59,47 @@ const Burn = () => {
           </span>
         </div>
 
-        <div className="flex gap-5 my-5">
-          <div className="bg-white rounded-2xl h-[390px] w-[370px]"></div>
+        <div className="flex justify-center flex-wrap gap-3 my-5">
+          <div className="w-[350px]">
+            <img
+              src={burn}
+              alt=""
+              onClick={() => setCollection("1")}
+              className={
+                collection !== "1"
+                  ? "rounded-2xl cursor-pointer"
+                  : "border-[4px] cursor-pointer border-yellow-400 rounded-2xl"
+              }
+            />
+          </div>
+          <div className="w-[350px]">
+            <img
+              src={burn1}
+              alt=""
+              onClick={() => setCollection("2")}
+              className={
+                collection === "1"
+                  ? "rounded-2xl cursor-pointer"
+                  : "border-[4px] cursor-pointer border-yellow-400 rounded-2xl"
+              }
+            />
+          </div>
         </div>
 
         {/* Inputs */}
         <div className="flex flex-col mt-10 gap-5 items-center">
           <input
+            onChange={handleId}
+            value={id}
             type="number"
             min={0}
             placeholder="Enter oDD BOi Token ID"
             className="w-[230px] outline-none h-[50px] px-4 text-[#000]"
           />
-          <button className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]">
+          <button
+            onClick={burnNFT}
+            className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
+          >
             BURN
           </button>
         </div>

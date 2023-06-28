@@ -27,7 +27,7 @@ const Model3d = () => {
         <div className="w-full h-[500px]  bg-[#131313] mt-5">
           <Spline
             style={{ border: "2px solid #5e5e5e" }}
-            scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode"
+            scene="https://prod.spline.design/Gtahyym8JDtbbwG2/scene.splinecode"
           />
         </div>
 

@@ -2,6 +2,7 @@ import { useAccount, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import { Link, NavLink } from "react-router-dom";
 
+import logo from "../../assets/logo.png";
 import menu from "../../assets/menu.png";
 import close from "../../assets/close.png";
 import discord from "../../assets/discord.png";
@@ -35,7 +36,13 @@ const Header = () => {
   return (
     <header className="border-b border-[#8e8e8e] w-full flex justify-center">
       <div className="max-w-screen-2xl w-full flex justify-between py-2 px-1 md:p-5">
-        <h1 className="flex items-center gap-4">logo </h1>
+        <h1 className="flex items-center gap-4">
+          <img
+            src={logo}
+            alt=""
+            className="w-36"
+          />
+        </h1>
 
         <div className="flex items-center gap-2 md:gap-6">
           <ul className="hidden md:flex gap-6 text-white">
@@ -48,8 +55,14 @@ const Header = () => {
               oDD Pair
             </NavLink>
 
-            <li className="font-medium">Snooze</li>
-
+            <NavLink
+              to="/snooze"
+              className={({ isActive }) =>
+                isActive ? "font-medium text-[#FFB800]" : "font-medium"
+              }
+            >
+              Snooze
+            </NavLink>
             <NavLink
               to="/burn"
               className={({ isActive }) =>
@@ -58,7 +71,6 @@ const Header = () => {
             >
               Burn
             </NavLink>
-
             <NavLink
               to="/3dmodel"
               className={({ isActive }) =>
@@ -67,7 +79,14 @@ const Header = () => {
             >
               3D Model
             </NavLink>
-            <li className="font-medium">Free bOOG</li>
+            <NavLink
+              to="/freeboog"
+              className={({ isActive }) =>
+                isActive ? "font-medium text-[#FFB800]" : "font-medium"
+              }
+            >
+              Free bOOG
+            </NavLink>
           </ul>
 
           <button onClick={() => setDrawer(true)}>
@@ -115,7 +134,13 @@ const Header = () => {
                 oDD Pair
               </Link>
 
-              <li className="font-medium">Snooze</li>
+              <Link
+                onClick={() => setDrawer(false)}
+                to="/snooze"
+                className="font-medium"
+              >
+                Snooze
+              </Link>
 
               <Link
                 onClick={() => setDrawer(false)}
@@ -124,7 +149,6 @@ const Header = () => {
               >
                 Burn
               </Link>
-
               <Link
                 onClick={() => setDrawer(false)}
                 to="/3dmodel"
@@ -132,7 +156,13 @@ const Header = () => {
               >
                 3D Model
               </Link>
-              <li className="font-medium">Free bOOG</li>
+              <Link
+                onClick={() => setDrawer(false)}
+                to="/freeboog"
+                className="font-medium"
+              >
+                Free bOOG
+              </Link>
             </ul>
 
             <ul className="w-full justify-center flex gap-10">

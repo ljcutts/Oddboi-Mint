@@ -2,6 +2,9 @@ import { useState } from "react";
 import OddpairModal1 from "../components/UI/oddPair1";
 import OddpairModal2 from "../components/UI/oddPair2";
 
+import oddpair1 from "../assets/5BoogsFAST.gif";
+import oddpair2 from "../assets/72_VKrnf_400x400.jpg";
+
 const Oddpair = () => {
   const [error1, setError1] = useState(false);
   const [error2, setError2] = useState(false);
@@ -15,8 +18,20 @@ const Oddpair = () => {
         <span className="text-[40px] text-[#C9C9C9]">Mint your oDD Pair</span>
 
         <div className="flex justify-center gap-5 my-5 flex-wrap">
-          <div className="bg-white rounded-2xl h-[360px] w-[360px]"></div>
-          <div className="bg-white rounded-2xl h-[360px] w-[360px]"></div>
+          <div className="bg-white rounded-2xl w-[360px]">
+            <img
+              src={oddpair1}
+              alt=""
+              className="rounded-xl"
+            />
+          </div>
+          <div className="bg-white rounded-2xl w-[360px]">
+            <img
+              src={oddpair2}
+              alt=""
+              className="rounded-xl"
+            />
+          </div>
         </div>
 
         {/* Inputs */}
