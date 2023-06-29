@@ -36,13 +36,17 @@ const Oddpair = () => {
 
         {/* Inputs */}
         <div className="flex flex-col mt-10 gap-5 items-center">
-          <button className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]">
+          <button
+            disabled={true}
+            className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
+          >
             MINT
           </button>
         </div>
 
+        {/* demo buttons */}
         <div className="flex gap-1 mt-2">
-          <button
+          {/* <button
             onClick={() => setError1(true)}
             className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
           >
@@ -53,7 +57,7 @@ const Oddpair = () => {
             className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
           >
             Modal 2
-          </button>
+          </button> */}
         </div>
 
         {/* Tip */}

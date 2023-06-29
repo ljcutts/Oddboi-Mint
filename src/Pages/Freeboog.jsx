@@ -51,12 +51,6 @@ const FreeBoog = () => {
             Mint 1 bOOG
           </button>
         </div>
-        <button
-          onClick={() => setError(true)}
-          className="mt-2 w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
-        >
-          Modal
-        </button>
 
         {/* Tip */}
         <span className="text-[#D1D1D1] mt-10 text-center font-extralight text-[15px]">

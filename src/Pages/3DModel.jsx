@@ -1,9 +1,31 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Model3DModal from "../components/UI/model3D";
 import Spline from "@splinetool/react-spline";
+import { useAccount } from "wagmi";
+import { ethers } from "ethers";
+import { AppContext } from "../context/appContext";
+import boogABI from "../contracts/boogAbi.json";
 
 const Model3d = () => {
   const [error, setError] = useState(false);
+  const [hasNFT, sethasNFT] = useState(false);
+
+  const { address, isConnected } = useAccount();
+  const { boogCA, provider } = useContext(AppContext);
+
+  const nftContract = new ethers.Contract(boogCA, boogABI, provider);
+
+  const checkOwner = async () => {
+    if (!isConnected) return;
+
+    const balance = await nftContract.balanceOf(address);
+    sethasNFT(ethers.utils.formatUnits(balance, 0) !== "0");
+    setError(ethers.utils.formatUnits(balance, 0) === "0");
+  };
+
+  useEffect(() => {
+    checkOwner();
+  }, []);
 
   return (
     <section className="w-full flex justify-center">
@@ -17,9 +39,6 @@ const Model3d = () => {
         {/* Instructions 1*/}
         <div className="flex flex-col items-center">
           <span className="font-medium text-[25px]">
-            Enter your oDD Token ID
-          </span>
-          <span className="font-light text-[15px]">
             Claim bOOG 3D Model & Related files{" "}
           </span>
         </div>
@@ -33,34 +52,17 @@ const Model3d = () => {
 
         {/* Inputs */}
         <div className="flex flex-col mt-10 gap-5 items-center">
-          <input
-            type="number"
-            min={0}
-            placeholder="Enter oDD bOOG Token ID"
-            className="w-[230px] outline-none h-[50px] px-4 text-[#000]"
-          />
-          <a
-            href="/"
-            download={"../assets/close.png"}
-          >
-            <button className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]">
-              DOWNLOAD
-            </button>
-          </a>
+          {hasNFT && (
+            <a
+              href="/"
+              download={"../assets/bOOG_3D_Assets.zip"}
+            >
+              <button className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]">
+                DOWNLOAD
+              </button>
+            </a>
+          )}
         </div>
-
-        <button
-          onClick={() => setError(true)}
-          className="w-[140px] mt-1 h-[40px] bg-[#FFB800] text-black rounded-[8px]"
-        >
-          Modal
-        </button>
-
-        {/* Tip */}
-        <span className="text-[#D1D1D1] mt-10 text-center font-extralight text-[15px]">
-          Your true token ID is OpenSea Token ID -1 <br />
-          Or look at the last three digits on your NFT URL
-        </span>
       </div>
     </section>
   );

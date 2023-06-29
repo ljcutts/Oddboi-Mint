@@ -95,6 +95,20 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "collection1",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "collection2",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "", "type": "address" },
       { "internalType": "uint256", "name": "", "type": "uint256" }
@@ -152,6 +166,16 @@
       { "internalType": "contract IERC20", "name": "", "type": "address" }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_collection1", "type": "address" },
+      { "internalType": "address", "name": "_collection2", "type": "address" }
+    ],
+    "name": "setCollections",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import BurnModal from "../components/UI/burn";
 
-import dog from "../assets/blinkiBoi_website.gif";
-import eyes from "../assets/BoogEyes.gif";
+import dog from "../assets/1.jpg";
+import eyes from "../assets/2.jpg";
 
 const Snooze = () => {
   const [error, setError] = useState(false);
+  const [collection, setCollection] = useState("1");
 
   return (
     <section className="w-full flex justify-center">
@@ -17,16 +18,26 @@ const Snooze = () => {
         </span>
 
         <div className="flex gap-5 my-5">
-          <div className="flex">
+          <div className="flex gap-2">
             <img
               src={dog}
               alt=""
-              className="rounded-2xl w-[170px] sm:w-[300px]"
+              onClick={() => setCollection("1")}
+              className={
+                collection !== "1"
+                  ? "rounded-2xl w-[170px] sm:w-[300px] cursor-pointer"
+                  : "border-[4px] w-[170px] sm:w-[300px] cursor-pointer border-yellow-400 rounded-2xl"
+              }
             />
             <img
               src={eyes}
               alt=""
-              className="rounded-2xl w-[170px] sm:w-[300px]"
+              onClick={() => setCollection("2")}
+              className={
+                collection === "1"
+                  ? "rounded-2xl w-[170px] sm:w-[300px] cursor-pointer"
+                  : "border-[4px] w-[170px] sm:w-[300px] cursor-pointer border-yellow-400 rounded-2xl"
+              }
             />
           </div>
         </div>
@@ -36,7 +47,7 @@ const Snooze = () => {
           <input
             type="number"
             min={0}
-            placeholder="Enter oDD Token ID"
+            placeholder="Enter Token ID"
             className="w-[230px] outline-none h-[50px] px-4 text-[#000]"
           />
           {/* Tip */}

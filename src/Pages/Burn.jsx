@@ -6,7 +6,9 @@ import burn1 from "../assets/bOOG_03.jpg";
 import { AppContext } from "../context/appContext";
 import { useAccount, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
 import { ethers } from "ethers";
-import abi from "../contracts/master.json";
+import snoBurnAbi from "../contracts/master.json";
+import boiABI from "../contracts/boiAbi.json";
+import boogABI from "../contracts/boogAbi.json";
 
 const Burn = () => {
   const { chain } = useNetwork();
@@ -18,7 +20,7 @@ const Burn = () => {
   const [collection, setCollection] = useState("1");
   const [id, setId] = useState();
 
-  const { masterCa } = useContext(AppContext);
+  const { snoBurnCa, boiCA, boogCA } = useContext(AppContext);
 
   const handleId = (e) => {
     if (e.target.value < 0) return;
@@ -27,18 +29,37 @@ const Burn = () => {
 
   const burnNFT = async () => {
     if (!isConnected) return alert("Not Connected!");
-
-    const contract = new ethers.Contract(masterCa, abi, signer);
-
-    console.log(collection, id, masterCa);
+    const burnCont = new ethers.Contract(snoBurnCa, snoBurnAbi, signer);
 
     try {
-      const burnToken = await contract.burn(collection, id);
-      await burnToken.wait();
+      if (collection === "1") {
+        const boiCont = new ethers.Contract(boiCA, boiABI, signer);
+        const appr = await boiCont.setApprovalForAll(
+          "0x85f192b5711270144bafd2828347bc08daeac2a7",
+          true
+        );
 
-      alert("NFT Burnt!");
+        await appr.wait();
+
+        const burn = await burnCont.burnToken(collection, id);
+        await burn.wait();
+
+        console.log("success");
+      } else {
+        const boogCont = new ethers.Contract(boogCA, boogABI, signer);
+
+        const appr = await boogCont.approve(snoBurnCa, id);
+
+        await appr.wait();
+
+        const burn = await burnCont.burnToken(collection, id);
+        await burn.wait();
+
+        console.log("sec");
+      }
     } catch (error) {
       console.log(error);
+      alert("Something wrong happened, check token ID or network");
     }
   };
 
@@ -66,9 +87,9 @@ const Burn = () => {
               alt=""
               onClick={() => setCollection("1")}
               className={
-                collection !== "1"
-                  ? "rounded-2xl cursor-pointer"
-                  : "border-[4px] cursor-pointer border-yellow-400 rounded-2xl"
+                collection === "1"
+                  ? "border-[4px] cursor-pointer border-yellow-400 rounded-2xl"
+                  : "rounded-2xl cursor-pointer"
               }
             />
           </div>
@@ -78,9 +99,9 @@ const Burn = () => {
               alt=""
               onClick={() => setCollection("2")}
               className={
-                collection === "1"
-                  ? "rounded-2xl cursor-pointer"
-                  : "border-[4px] cursor-pointer border-yellow-400 rounded-2xl"
+                collection === "2"
+                  ? "border-[4px] cursor-pointer border-yellow-400 rounded-2xl"
+                  : "rounded-2xl cursor-pointer"
               }
             />
           </div>
@@ -93,7 +114,7 @@ const Burn = () => {
             value={id}
             type="number"
             min={0}
-            placeholder="Enter oDD BOi Token ID"
+            placeholder="Enter Your Token ID"
             className="w-[230px] outline-none h-[50px] px-4 text-[#000]"
           />
           <button
@@ -103,12 +124,6 @@ const Burn = () => {
             BURN
           </button>
         </div>
-        <button
-          onClick={() => setError(true)}
-          className="mt-2 w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
-        >
-          Modal
-        </button>
 
         {/* Tip */}
         <span className="text-[#D1D1D1] mt-10 text-center font-extralight text-[15px]">

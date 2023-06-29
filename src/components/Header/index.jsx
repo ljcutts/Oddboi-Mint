@@ -20,12 +20,12 @@ const Header = () => {
   const { address, isConnected } = useAccount();
 
   const connectWallet = () => {
-    if (chain?.id !== 80001) {
-      switchNetwork?.(80001);
+    if (chain?.id !== 5) {
+      switchNetwork?.(5);
     }
 
     try {
-      switchNetwork?.(80001);
+      switchNetwork?.(5);
 
       open();
     } catch (error) {
