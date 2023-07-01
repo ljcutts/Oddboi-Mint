@@ -4,10 +4,25 @@ import OddpairModal2 from "../components/UI/oddPair2";
 
 import oddpair1 from "../assets/5BoogsFAST.gif";
 import oddpair2 from "../assets/72_VKrnf_400x400.jpg";
+import abi from "../contracts/boiAbi.json"
+
+import {useContract, useSigner} from "wagmi"
 
 const Oddpair = () => {
   const [error1, setError1] = useState(false);
   const [error2, setError2] = useState(false);
+
+  const {data:signer} = useSigner()
+  
+  const contract = useContract({
+    address: "",
+    abi: abi,
+    signerOrProvider: signer
+  })
+
+  const mint = async() => {
+    await contract.mint()
+  }
 
   return (
     <section className="w-full flex justify-center">
@@ -37,7 +52,7 @@ const Oddpair = () => {
         {/* Inputs */}
         <div className="flex flex-col mt-10 gap-5 items-center">
           <button
-            disabled={true}
+            onClick={mint}
             className="w-[140px] h-[40px] bg-[#FFB800] text-black rounded-[8px]"
           >
             MINT

@@ -3,10 +3,49 @@ import BurnModal from "../components/UI/burn";
 
 import dog from "../assets/1.jpg";
 import eyes from "../assets/2.jpg";
+import close from "../assets/close.png"
+import { useContract, useSigner } from "wagmi";
+import abi from "../contracts/master.json"
+
 
 const Snooze = () => {
   const [error, setError] = useState(false);
   const [collection, setCollection] = useState("1");
+  const [tokenId, setTokenId] = useState("0")
+  const [tokenId2, setTokenId2] = useState("0");
+  const [tokenId3, setTokenId3] = useState("0");
+  const [tokenId4, setTokenId4] = useState("0");
+  const [modal, setModal] = useState("")
+  const [isItStaked, setIsItStaked] = useState(false)
+  const [pendingReward, setPendingReward] = useState(0)
+
+
+   const { data: signer } = useSigner();
+
+   const contract = useContract({
+     address: "",
+     abi: abi,
+     signerOrProvider: signer,
+   });
+
+   const snooze = async () => {
+     await contract.stakeNew(collection, tokenId);
+   };
+
+   const unSnooze = async () => {
+     await contract.unStakeNew(collection, tokenId);
+   };
+
+   const checkReward = async() => {
+    //await contract.pendingRewardNew(collection, tokenId);
+     setModal("reward")
+   }
+
+   const isStaked = async() => {
+    //const isThisStaked = await contract.tokenIdIsStaked(collection, tokenId);
+    setModal("stake")
+    setIsItStaked(true)
+   }
 
   return (
     <section className="w-full flex justify-center">
@@ -47,8 +86,10 @@ const Snooze = () => {
           <input
             type="number"
             min={0}
+            value={tokenId}
             placeholder="Enter Token ID"
             className="w-[230px] outline-none h-[50px] px-4 text-[#000]"
+            onChange={(e) => setTokenId(Number(e.target.value))}
           />
           {/* Tip */}
           <span className="text-[#D1D1D1] mt-2 text-center font-extralight text-[15px]">
@@ -58,11 +99,17 @@ const Snooze = () => {
 
           {/* Buttons */}
           <div className="flex gap-2 sm:gap-5">
-            <button className="text-[20px] uppercase font-bold rounded-tl-none w-[160px] h-[60px] bg-[#FFB800] rounded-[8px]">
+            <button
+              onClick={snooze}
+              className="text-[20px] uppercase font-bold rounded-tl-none w-[160px] h-[60px] bg-[#FFB800] rounded-[8px]"
+            >
               Snooze
             </button>
 
-            <button className="text-[20px] uppercase font-bold rounded-tl-none w-[160px] h-[60px] bg-[#FFB800] rounded-[8px]">
+            <button
+              onClick={unSnooze}
+              className="text-[20px] uppercase font-bold rounded-tl-none w-[160px] h-[60px] bg-[#FFB800] rounded-[8px]"
+            >
               Unsnooze
             </button>
           </div>
@@ -92,11 +139,16 @@ const Snooze = () => {
           <div className="flex gap-2">
             <input
               type="number"
+              value={tokenId2}
+              onChange={(e) => setTokenId2(Number(e.target.value))}
               min={0}
               placeholder="Enter oDD Token ID"
               className="w-[180px] sm:w-[230px] outline-none h-[50px] px-4 text-[#000]"
             />
-            <button className="text-[15px] uppercase font-bold w-[140px] h-[50px] bg-[#FFB800] rounded-[8px]">
+            <button
+              onClick={checkReward}
+              className="text-[15px] uppercase font-bold w-[140px] h-[50px] bg-[#FFB800] rounded-[8px]"
+            >
               Check Reward
             </button>
           </div>
@@ -106,14 +158,74 @@ const Snooze = () => {
             <input
               type="number"
               min={0}
+              value={tokenId3}
+              onChange={(e) => setTokenId3(Number(e.target.value))}
               placeholder="Enter oDD Token ID"
               className="w-[180px] sm:w-[230px] outline-none h-[50px] px-4 text-[#000]"
             />
-            <button className="text-[15px] uppercase font-bold w-[140px] h-[50px] bg-[#FFB800] rounded-[8px]">
+            <button
+              onClick={isStaked}
+              className="text-[15px] uppercase font-bold w-[140px] h-[50px] bg-[#FFB800] rounded-[8px]"
+            >
               is Staked?
             </button>
           </div>
-
+          {modal != "" && (
+            <div className="bg-yellow-400 text-center grid fixed place-items-center z-50 w-[100%] h-[100%] top-0 bottom-[15rem] left-0">
+              <div className="bg-black w-[65%] h-[60%] rounded-[8px]">
+                <div className="flex items-center">
+                  <span className="text-[30px] ml-5 md:text-[40px] relative top-2 text-[#C9C9C9]">
+                    Select Collection
+                  </span>
+                  <img
+                    onClick={() => setModal(false)}
+                    src={close}
+                    alt=""
+                    className="text-right cursor-pointer max-w-[2%] max-h-[2%]"
+                  />
+                </div>
+                <div className="flex items-center mt-5 justify-around">
+                  <img
+                    src={dog}
+                    alt=""
+                    onClick={() => setCollection("1")}
+                    className={
+                      collection !== "1"
+                        ? "rounded-2xl w-[30%] sm:w-[300px] cursor-pointer"
+                        : "border-[4px] w-[30%] sm:w-[300px] cursor-pointer border-yellow-400 rounded-2xl"
+                    }
+                  />
+                  <img
+                    src={eyes}
+                    alt=""
+                    onClick={() => setCollection("2")}
+                    className={
+                      collection === "1"
+                        ? "rounded-2xl  w-[30%] sm:w-[300px] cursor-pointer"
+                        : "border-[4px]  w-[30%] sm:w-[300px] cursor-pointer border-yellow-400 rounded-2xl"
+                    }
+                  />
+                </div>
+                {modal === "stake" && (
+                  <div className="mt-8 text-[30px] mr-[1rem]">
+                    TokenId <span className="text-yellow-400">{tokenId2}</span>{" "}
+                    Is Staked:{" "}
+                    {isItStaked ? (
+                      <span className="text-green-500">True</span>
+                    ) : (
+                      <span className="text-red-500">False</span>
+                    )}
+                  </div>
+                )}
+                {modal === "reward" && (
+                  <div className="mt-8 text-[30px] mr-[1rem]">
+                    TokenId <span className="text-yellow-400">{tokenId3}</span>{" "} With
+                    Pending Reward: {pendingReward} 
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           {/* Claim $oDD */}
           <div className="flex gap-2">
             <input

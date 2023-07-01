@@ -41,10 +41,9 @@ const Burn = () => {
 
         await appr.wait();
 
-        const burn = await burnCont.burnToken(collection, id);
+        const burn = await burnCont.burnToken(Number(collection), id);
         await burn.wait();
-
-        console.log("success");
+        
       } else {
         const boogCont = new ethers.Contract(boogCA, boogABI, signer);
 
@@ -52,10 +51,8 @@ const Burn = () => {
 
         await appr.wait();
 
-        const burn = await burnCont.burnToken(collection, id);
+        const burn = await burnCont.burnToken(Number(collection), id);
         await burn.wait();
-
-        console.log("sec");
       }
     } catch (error) {
       console.log(error);
