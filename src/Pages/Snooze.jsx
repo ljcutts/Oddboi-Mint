@@ -173,16 +173,19 @@ const Snooze = () => {
           {modal != "" && (
             <div className="bg-yellow-400 text-center grid fixed place-items-center z-50 w-[100%] h-[100%] top-0 bottom-[15rem] left-0">
               <div className="bg-black w-[65%] h-[60%] rounded-[8px]">
-                <div className="flex items-center">
+                <div className="flex items-center justify-between">
+                  <div></div>
                   <span className="text-[30px] ml-5 md:text-[40px] relative top-2 text-[#C9C9C9]">
-                    Select Collection
+                    From Which Collection
                   </span>
-                  <img
-                    onClick={() => setModal(false)}
-                    src={close}
-                    alt=""
-                    className="text-right cursor-pointer max-w-[2%] max-h-[2%]"
-                  />
+                  <div>
+                    <img
+                      onClick={() => setModal(false)}
+                      src={close}
+                      alt=""
+                      className="cursor-pointer relative right-4 w-[25px] h-[25px]"
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center mt-5 justify-around">
                   <img
@@ -191,8 +194,8 @@ const Snooze = () => {
                     onClick={() => setCollection("1")}
                     className={
                       collection !== "1"
-                        ? "rounded-2xl w-[30%] sm:w-[300px] cursor-pointer"
-                        : "border-[4px] w-[30%] sm:w-[300px] cursor-pointer border-yellow-400 rounded-2xl"
+                        ? "rounded-2xl md:w-[30%] w-[25%] cursor-pointer"
+                        : "border-[4px] md:w-[30%] w-[25%] cursor-pointer border-yellow-400 rounded-2xl"
                     }
                   />
                   <img
@@ -201,14 +204,14 @@ const Snooze = () => {
                     onClick={() => setCollection("2")}
                     className={
                       collection === "1"
-                        ? "rounded-2xl  w-[30%] sm:w-[300px] cursor-pointer"
-                        : "border-[4px]  w-[30%] sm:w-[300px] cursor-pointer border-yellow-400 rounded-2xl"
+                        ? "rounded-2xl  md:w-[30%] w-[25%] cursor-pointer"
+                        : "border-[4px]  md:w-[30%] w-[25%] cursor-pointer border-yellow-400 rounded-2xl"
                     }
                   />
                 </div>
                 {modal === "stake" && (
                   <div className="mt-8 text-[30px] mr-[1rem]">
-                    TokenId <span className="text-yellow-400">{tokenId2}</span>{" "}
+                    TokenId <span className="text-yellow-400">{tokenId3}</span>{" "}
                     Is Staked:{" "}
                     {isItStaked ? (
                       <span className="text-green-500">True</span>
@@ -219,8 +222,8 @@ const Snooze = () => {
                 )}
                 {modal === "reward" && (
                   <div className="mt-8 text-[30px] mr-[1rem]">
-                    TokenId <span className="text-yellow-400">{tokenId3}</span>{" "} With
-                    Pending Reward: {pendingReward} 
+                    TokenId <span className="text-yellow-400">{tokenId2}</span>{" "}
+                    With Pending Reward: {pendingReward}
                   </div>
                 )}
               </div>
